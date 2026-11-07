@@ -1,0 +1,12 @@
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		tcp dport 22 accept
+	}
+}
+table ip filter2 {
+	chain input2 {
+		type filter hook input priority filter; policy accept;
+		tcp dport 8080 accept
+	}
+}

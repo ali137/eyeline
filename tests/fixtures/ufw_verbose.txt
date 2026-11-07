@@ -1,0 +1,20 @@
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), disabled (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+22/tcp                     LIMIT IN    Anywhere
+80,443/tcp                 ALLOW IN    Anywhere
+5432                       DENY IN     Anywhere
+8000:8100/tcp              ALLOW IN    Anywhere                   # dev range
+3306/tcp                   ALLOW IN    10.0.0.0/8
+9000/udp                   REJECT IN   Anywhere
+6000:6100/tcp (Mosh Lab)   ALLOW IN    Anywhere
+Anywhere on eth1           ALLOW IN    Anywhere
+25/tcp                     ALLOW OUT   Anywhere
+22/tcp (v6)                LIMIT IN    Anywhere (v6)
+80,443/tcp (v6)            ALLOW IN    Anywhere (v6)
+5432 (v6)                  ALLOW IN    Anywhere (v6)
+6000:6100/tcp (Mosh Lab (v6)) ALLOW IN    Anywhere (v6)

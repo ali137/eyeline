@@ -1,0 +1,22 @@
+http:
+  routers:
+    app-router:
+      rule: "Host(`app.example.com`)"
+      entryPoints:
+        - web
+      service: app-svc
+    shop-router:
+      rule: "Host(`shop.example.com`)"
+      entryPoints:
+        - websecure
+      service: shop-svc
+  services:
+    app-svc:
+      loadBalancer:
+        servers:
+          - url: "http://127.0.0.1:3000"
+    shop-svc:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.0.9:5000"
+          - url: "http://192.168.56.7:5000"

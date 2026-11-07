@@ -1,0 +1,11 @@
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy accept;
+		iif "lo" accept
+		ct state established,related accept
+		tcp dport 22 accept
+		tcp dport 5432 drop
+		tcp dport 9000 reject with icmp port-unreachable
+		tcp dport { 80, 443 } accept
+	}
+}

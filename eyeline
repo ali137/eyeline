@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+"""eyeline: prove what the internet can reach on a server you own.
+
+Run from the repo root of a clone: ./eyeline <command>. Standard library only.
+Needs Python 3.9+ and OpenSSH 7.6+ (ssh, ssh-keyscan) on this machine.
+"""
+import os
+import sys
+
+if sys.version_info < (3, 9):
+    sys.exit("eyeline needs Python 3.9 or newer (found %d.%d)." % sys.version_info[:2])
+
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+
+from eyeline_engine.cli import main  # noqa: E402
+
+sys.exit(main(sys.argv[1:]))

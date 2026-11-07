@@ -1,0 +1,10 @@
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		tcp dport 22 goto subchain
+	}
+
+	chain subchain {
+		accept
+	}
+}

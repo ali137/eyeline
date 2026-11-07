@@ -1,0 +1,73 @@
+[
+  {
+    "Id": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+    "Name": "/slice-lab-db-1",
+    "State": {"Status": "running", "StartedAt": "2026-10-27T09:00:00.123456789Z"},
+    "Config": {
+      "Image": "postgres:16-alpine",
+      "Labels": {
+        "com.docker.compose.config-hash": "9f8e7d",
+        "com.docker.compose.project": "slice",
+        "com.docker.compose.project.config_files": "/srv/eyeline/lab/slice/docker-compose.yml",
+        "com.docker.compose.project.working_dir": "/srv/eyeline/lab/slice",
+        "com.docker.compose.service": "lab-db"
+      }
+    },
+    "NetworkSettings": {
+      "Ports": {
+        "5432/tcp": [
+          {"HostIp": "0.0.0.0", "HostPort": "5432"},
+          {"HostIp": "::", "HostPort": "5432"}
+        ]
+      }
+    }
+  },
+  {
+    "Id": "b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3",
+    "Name": "/slice-lab-cache-1",
+    "State": {"Status": "running", "StartedAt": "2026-10-27T09:00:01.000000000Z"},
+    "Config": {
+      "Image": "redis:7-alpine",
+      "Labels": {
+        "com.docker.compose.project": "slice",
+        "com.docker.compose.project.config_files": "/srv/eyeline/lab/slice/docker-compose.yml",
+        "com.docker.compose.project.working_dir": "/srv/eyeline/lab/slice",
+        "com.docker.compose.service": "lab-cache"
+      }
+    },
+    "NetworkSettings": {
+      "Ports": {
+        "6379/tcp": [{"HostIp": "127.0.0.1", "HostPort": "6379"}]
+      }
+    }
+  },
+  {
+    "Id": "c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4",
+    "Name": "/slice-lab-web-1",
+    "State": {"Status": "running", "StartedAt": "2026-10-27T09:00:02.000000000Z"},
+    "Config": {
+      "Image": "nginx:alpine",
+      "Labels": {
+        "com.docker.compose.project": "slice",
+        "com.docker.compose.project.config_files": "/srv/eyeline/lab/slice/docker-compose.yml",
+        "com.docker.compose.project.working_dir": "/srv/eyeline/lab/slice",
+        "com.docker.compose.service": "lab-web"
+      }
+    },
+    "NetworkSettings": {
+      "Ports": {
+        "80/tcp": [{"HostIp": "", "HostPort": "80"}],
+        "443/tcp": null
+      }
+    }
+  },
+  {
+    "Id": "d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5",
+    "Name": "/adhoc",
+    "State": {"Status": "running", "StartedAt": "2026-10-27T08:00:00.000000000Z"},
+    "Config": {"Image": "busybox", "Labels": null},
+    "NetworkSettings": {
+      "Ports": {"9000/udp": [{"HostIp": "0.0.0.0", "HostPort": "9000"}]}
+    }
+  }
+]

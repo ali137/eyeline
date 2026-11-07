@@ -1,0 +1,8 @@
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		meta mark 0x00000001 accept
+		tcp flags syn limit rate 5/second accept
+		tcp dport 22 accept
+	}
+}

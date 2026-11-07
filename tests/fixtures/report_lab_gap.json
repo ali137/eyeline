@@ -1,0 +1,746 @@
+{
+  "target": "lab",
+  "ssh": "lab-host",
+  "started": "2026-10-28T00:54:37+00:00",
+  "proof": [
+    {
+      "ip": "203.0.113.71",
+      "proven": true,
+      "method": "http-token",
+      "port": 80,
+      "detail": "token found at http://203.0.113.71/.well-known/eyeline.txt",
+      "tried": [
+        [
+          "http-token",
+          "token found at http://203.0.113.71/.well-known/eyeline.txt"
+        ]
+      ]
+    }
+  ],
+  "vantage": {
+    "verdict": "different",
+    "reasons": [],
+    "checks": [
+      {
+        "check": "local-interface",
+        "same_host": false,
+        "detail": "203.0.113.71 is not on any local interface",
+        "ip": "203.0.113.71"
+      },
+      {
+        "check": "udp-source",
+        "same_host": false,
+        "detail": "the kernel would send to 203.0.113.71 from 198.51.100.118",
+        "ip": "203.0.113.71"
+      },
+      {
+        "check": "machine-id",
+        "same_host": false,
+        "detail": "machine-id differs from the target's",
+        "ip": "203.0.113.71"
+      },
+      {
+        "check": "boot-id",
+        "same_host": false,
+        "detail": "this machine runs a separate boot from the target (boot_id differs)",
+        "ip": "203.0.113.71"
+      },
+      {
+        "check": "guest-of-target",
+        "same_host": false,
+        "detail": "no local address inside a target bridge subnet",
+        "ip": "203.0.113.71"
+      },
+      {
+        "check": "target-interface-same",
+        "same_host": false,
+        "detail": "no global address shared with the target",
+        "ip": "203.0.113.71"
+      }
+    ],
+    "stage": "remote"
+  },
+  "inside": {
+    "listeners": [
+      {
+        "addr": "127.0.0.1",
+        "port": 38905,
+        "process": "containerd"
+      },
+      {
+        "addr": "127.0.0.1",
+        "port": 6379,
+        "process": "docker-proxy"
+      },
+      {
+        "addr": "127.0.0.53",
+        "port": 53,
+        "process": "systemd-resolve"
+      },
+      {
+        "addr": "0.0.0.0",
+        "port": 5432,
+        "process": "docker-proxy"
+      },
+      {
+        "addr": "0.0.0.0",
+        "port": 80,
+        "process": "docker-proxy"
+      },
+      {
+        "addr": "0.0.0.0",
+        "port": 22,
+        "process": "sshd"
+      },
+      {
+        "addr": "::",
+        "port": 5432,
+        "process": "docker-proxy"
+      },
+      {
+        "addr": "::",
+        "port": 80,
+        "process": "docker-proxy"
+      },
+      {
+        "addr": "::",
+        "port": 22,
+        "process": "sshd"
+      }
+    ],
+    "ufw": {
+      "active": true,
+      "default_incoming": "deny",
+      "rules": [
+        {
+          "ports": [
+            [
+              22,
+              22
+            ]
+          ],
+          "proto": "tcp",
+          "action": "allow",
+          "v6": false,
+          "from": "Anywhere",
+          "app": null,
+          "raw": "22/tcp                     ALLOW IN    Anywhere",
+          "pos": 1
+        },
+        {
+          "ports": [
+            [
+              80,
+              80
+            ]
+          ],
+          "proto": "tcp",
+          "action": "allow",
+          "v6": false,
+          "from": "Anywhere",
+          "app": null,
+          "raw": "80/tcp                     ALLOW IN    Anywhere",
+          "pos": 2
+        },
+        {
+          "ports": [
+            [
+              5432,
+              5432
+            ]
+          ],
+          "proto": null,
+          "action": "deny",
+          "v6": false,
+          "from": "Anywhere",
+          "app": null,
+          "raw": "5432                       DENY IN     Anywhere",
+          "pos": 3
+        },
+        {
+          "ports": [
+            [
+              22,
+              22
+            ]
+          ],
+          "proto": "tcp",
+          "action": "allow",
+          "v6": true,
+          "from": "Anywhere",
+          "app": null,
+          "raw": "22/tcp (v6)                ALLOW IN    Anywhere (v6)",
+          "pos": 4
+        },
+        {
+          "ports": [
+            [
+              80,
+              80
+            ]
+          ],
+          "proto": "tcp",
+          "action": "allow",
+          "v6": true,
+          "from": "Anywhere",
+          "app": null,
+          "raw": "80/tcp (v6)                ALLOW IN    Anywhere (v6)",
+          "pos": 5
+        },
+        {
+          "ports": [
+            [
+              5432,
+              5432
+            ]
+          ],
+          "proto": null,
+          "action": "deny",
+          "v6": true,
+          "from": "Anywhere",
+          "app": null,
+          "raw": "5432 (v6)                  DENY IN     Anywhere (v6)",
+          "pos": 6
+        }
+      ],
+      "unresolved": [],
+      "unresolved_at": []
+    },
+    "firewall": {
+      "kind": "ufw",
+      "ufw": {
+        "active": true,
+        "default_incoming": "deny",
+        "rules": [
+          {
+            "ports": [
+              [
+                22,
+                22
+              ]
+            ],
+            "proto": "tcp",
+            "action": "allow",
+            "v6": false,
+            "from": "Anywhere",
+            "app": null,
+            "raw": "22/tcp                     ALLOW IN    Anywhere",
+            "pos": 1
+          },
+          {
+            "ports": [
+              [
+                80,
+                80
+              ]
+            ],
+            "proto": "tcp",
+            "action": "allow",
+            "v6": false,
+            "from": "Anywhere",
+            "app": null,
+            "raw": "80/tcp                     ALLOW IN    Anywhere",
+            "pos": 2
+          },
+          {
+            "ports": [
+              [
+                5432,
+                5432
+              ]
+            ],
+            "proto": null,
+            "action": "deny",
+            "v6": false,
+            "from": "Anywhere",
+            "app": null,
+            "raw": "5432                       DENY IN     Anywhere",
+            "pos": 3
+          },
+          {
+            "ports": [
+              [
+                22,
+                22
+              ]
+            ],
+            "proto": "tcp",
+            "action": "allow",
+            "v6": true,
+            "from": "Anywhere",
+            "app": null,
+            "raw": "22/tcp (v6)                ALLOW IN    Anywhere (v6)",
+            "pos": 4
+          },
+          {
+            "ports": [
+              [
+                80,
+                80
+              ]
+            ],
+            "proto": "tcp",
+            "action": "allow",
+            "v6": true,
+            "from": "Anywhere",
+            "app": null,
+            "raw": "80/tcp (v6)                ALLOW IN    Anywhere (v6)",
+            "pos": 5
+          },
+          {
+            "ports": [
+              [
+                5432,
+                5432
+              ]
+            ],
+            "proto": null,
+            "action": "deny",
+            "v6": true,
+            "from": "Anywhere",
+            "app": null,
+            "raw": "5432 (v6)                  DENY IN     Anywhere (v6)",
+            "pos": 6
+          }
+        ],
+        "unresolved": [],
+        "unresolved_at": []
+      }
+    },
+    "nat": {
+      "dnat_ports": [
+        80,
+        5432
+      ],
+      "docker_user_filtering": false
+    },
+    "published": [
+      {
+        "host_ip": "0.0.0.0",
+        "host_port": 5432,
+        "proto": "tcp",
+        "container": "lab-host-slice-lab-db-1",
+        "service": "lab-db",
+        "project": "lab-host-slice",
+        "compose_files": [
+          "/home/user/lab-host-slice/docker-compose.yml"
+        ],
+        "working_dir": "/home/user/lab-host-slice"
+      },
+      {
+        "host_ip": "::",
+        "host_port": 5432,
+        "proto": "tcp",
+        "container": "lab-host-slice-lab-db-1",
+        "service": "lab-db",
+        "project": "lab-host-slice",
+        "compose_files": [
+          "/home/user/lab-host-slice/docker-compose.yml"
+        ],
+        "working_dir": "/home/user/lab-host-slice"
+      },
+      {
+        "host_ip": "0.0.0.0",
+        "host_port": 80,
+        "proto": "tcp",
+        "container": "lab-host-slice-lab-web-1",
+        "service": "lab-web",
+        "project": "lab-host-slice",
+        "compose_files": [
+          "/home/user/lab-host-slice/docker-compose.yml"
+        ],
+        "working_dir": "/home/user/lab-host-slice"
+      },
+      {
+        "host_ip": "::",
+        "host_port": 80,
+        "proto": "tcp",
+        "container": "lab-host-slice-lab-web-1",
+        "service": "lab-web",
+        "project": "lab-host-slice",
+        "compose_files": [
+          "/home/user/lab-host-slice/docker-compose.yml"
+        ],
+        "working_dir": "/home/user/lab-host-slice"
+      },
+      {
+        "host_ip": "127.0.0.1",
+        "host_port": 6379,
+        "proto": "tcp",
+        "container": "lab-host-slice-lab-cache-1",
+        "service": "lab-cache",
+        "project": "lab-host-slice",
+        "compose_files": [
+          "/home/user/lab-host-slice/docker-compose.yml"
+        ],
+        "working_dir": "/home/user/lab-host-slice"
+      }
+    ],
+    "compose": {
+      "lab-db:5432": {
+        "file": "/home/user/lab-host-slice/docker-compose.yml",
+        "line": 18,
+        "text": "- \"5432:5432\""
+      },
+      "lab-web:80": {
+        "file": "/home/user/lab-host-slice/docker-compose.yml",
+        "line": 30,
+        "text": "- \"80:80\""
+      },
+      "lab-cache:6379": {
+        "file": "/home/user/lab-host-slice/docker-compose.yml",
+        "line": 23,
+        "text": "- \"127.0.0.1:6379:6379\""
+      }
+    },
+    "sshd": {
+      "port": 22,
+      "password_auth": true,
+      "root_login": "without-password",
+      "pubkey_auth": true
+    },
+    "revproxy": [],
+    "panels": [],
+    "dns": [],
+    "notes": [
+      "reverse proxy: none read (no host nginx/Caddy/Traefik config, or it runs only in a container not inspected here)",
+      "own DNS: no local authoritative zone file points a name at this box (a zone hosted at a third-party DNS provider is not read)"
+    ]
+  },
+  "probe": {
+    "results": {
+      "203.0.113.71": {
+        "21": "closed",
+        "22": "closed",
+        "25": "closed",
+        "53": "filtered",
+        "80": "open",
+        "110": "closed",
+        "143": "closed",
+        "443": "closed",
+        "2375": "closed",
+        "2376": "closed",
+        "3000": "closed",
+        "3306": "closed",
+        "5000": "closed",
+        "5432": "open",
+        "5672": "closed",
+        "6379": "closed",
+        "8000": "closed",
+        "8080": "closed",
+        "8443": "closed",
+        "9000": "closed",
+        "9090": "closed",
+        "9200": "closed",
+        "10250": "closed",
+        "11211": "closed",
+        "27017": "closed"
+      }
+    },
+    "started": "2026-10-28T00:55:04+00:00",
+    "seconds": 4.041,
+    "retested": 1
+  },
+  "probe_plan": {
+    "203.0.113.71": {
+      "ports": [
+        21,
+        22,
+        25,
+        53,
+        80,
+        110,
+        143,
+        443,
+        2375,
+        2376,
+        3000,
+        3306,
+        5000,
+        5432,
+        5672,
+        6379,
+        8000,
+        8080,
+        8443,
+        9000,
+        9090,
+        9200,
+        10250,
+        11211,
+        27017
+      ],
+      "why": "you stated at init that every port of this IP reaches the server (--all-ports)"
+    }
+  },
+  "rows": [
+    {
+      "port": 22,
+      "listening": "0.0.0.0 (sshd), :: (sshd)",
+      "firewall": "allow",
+      "firewall_reason": "UFW rule: 22/tcp                     ALLOW IN    Anywhere",
+      "internet": {
+        "203.0.113.71": "closed"
+      },
+      "verdict": "closed",
+      "context": [
+        "sshd listens here (effective `sshd -T`)",
+        "password authentication is ON (brute-force exposure; key-only is safer)",
+        "root may log in with a key only (PermitRootLogin without-password)"
+      ],
+      "not_probed_reason": null,
+      "published": []
+    },
+    {
+      "port": 53,
+      "listening": "127.0.0.53 (systemd-resolve)",
+      "firewall": "deny",
+      "firewall_reason": "no UFW rule matches; default incoming is deny",
+      "internet": {
+        "203.0.113.71": "filtered"
+      },
+      "verdict": "loopback only",
+      "context": [],
+      "not_probed_reason": null,
+      "published": []
+    },
+    {
+      "port": 80,
+      "listening": "0.0.0.0 (docker-proxy), :: (docker-proxy)",
+      "firewall": "allow",
+      "firewall_reason": "UFW rule: 80/tcp                     ALLOW IN    Anywhere",
+      "internet": {
+        "203.0.113.71": "open"
+      },
+      "verdict": "intended",
+      "context": [],
+      "not_probed_reason": null,
+      "published": [
+        {
+          "host_ip": "0.0.0.0",
+          "host_port": 80,
+          "proto": "tcp",
+          "container": "lab-host-slice-lab-web-1",
+          "service": "lab-web",
+          "project": "lab-host-slice",
+          "compose_files": [
+            "/home/user/lab-host-slice/docker-compose.yml"
+          ],
+          "working_dir": "/home/user/lab-host-slice"
+        },
+        {
+          "host_ip": "::",
+          "host_port": 80,
+          "proto": "tcp",
+          "container": "lab-host-slice-lab-web-1",
+          "service": "lab-web",
+          "project": "lab-host-slice",
+          "compose_files": [
+            "/home/user/lab-host-slice/docker-compose.yml"
+          ],
+          "working_dir": "/home/user/lab-host-slice"
+        }
+      ]
+    },
+    {
+      "port": 5432,
+      "listening": "0.0.0.0 (docker-proxy), :: (docker-proxy)",
+      "firewall": "deny",
+      "firewall_reason": "UFW rule: 5432                       DENY IN     Anywhere",
+      "internet": {
+        "203.0.113.71": "open"
+      },
+      "verdict": "GAP",
+      "context": [],
+      "not_probed_reason": null,
+      "published": [
+        {
+          "host_ip": "0.0.0.0",
+          "host_port": 5432,
+          "proto": "tcp",
+          "container": "lab-host-slice-lab-db-1",
+          "service": "lab-db",
+          "project": "lab-host-slice",
+          "compose_files": [
+            "/home/user/lab-host-slice/docker-compose.yml"
+          ],
+          "working_dir": "/home/user/lab-host-slice"
+        },
+        {
+          "host_ip": "::",
+          "host_port": 5432,
+          "proto": "tcp",
+          "container": "lab-host-slice-lab-db-1",
+          "service": "lab-db",
+          "project": "lab-host-slice",
+          "compose_files": [
+            "/home/user/lab-host-slice/docker-compose.yml"
+          ],
+          "working_dir": "/home/user/lab-host-slice"
+        }
+      ]
+    },
+    {
+      "port": 6379,
+      "listening": "127.0.0.1 (docker-proxy)",
+      "firewall": "deny",
+      "firewall_reason": "no UFW rule matches; default incoming is deny",
+      "internet": {
+        "203.0.113.71": "closed"
+      },
+      "verdict": "loopback only",
+      "context": [],
+      "not_probed_reason": null,
+      "published": []
+    },
+    {
+      "port": 38905,
+      "listening": "127.0.0.1 (containerd)",
+      "firewall": "deny",
+      "firewall_reason": "no UFW rule matches; default incoming is deny",
+      "internet": {},
+      "verdict": "loopback only",
+      "context": [],
+      "not_probed_reason": null,
+      "published": []
+    }
+  ],
+  "findings": [
+    {
+      "port": 5432,
+      "title": "Docker publishes port 5432 (lab-db) past the firewall",
+      "cause": "Docker publishes this port past the firewall. Docker's NAT rules send the traffic to the container before UFW's INPUT rules see it, so `ufw deny 5432` never applies.",
+      "location": {
+        "file": "/home/user/lab-host-slice/docker-compose.yml",
+        "line": 18,
+        "text": "- \"5432:5432\""
+      },
+      "fix": "At /home/user/lab-host-slice/docker-compose.yml:18 change\n    - \"5432:5432\"\nto\n    - \"127.0.0.1:5432:5432\"\nthen run\n    docker compose -p lab-host-slice -f /home/user/lab-host-slice/docker-compose.yml up -d lab-db\nIf other machines must reach it, keep it published and restrict it in the DOCKER-USER iptables chain instead (not automated here).",
+      "undo": "Put the original line back (- \"5432:5432\") and run the same command:\n    docker compose -p lab-host-slice -f /home/user/lab-host-slice/docker-compose.yml up -d lab-db",
+      "lockout": "This cuts off every client that reaches lab-db on 203.0.113.71:5432 from another machine (apps on other servers, your own database client). It does not touch SSH. Recreating the container restarts lab-db briefly."
+    }
+  ],
+  "readonly": {
+    "packages_changed": 0,
+    "services_restarted": 0,
+    "restarted_units": [],
+    "new_units": [],
+    "stopped_units": [],
+    "containers_restarted": 0,
+    "new_containers": [],
+    "stopped_containers": []
+  },
+  "commands": [
+    {
+      "name": "snap_packages",
+      "command": "(dpkg-query -W -f='${Package} ${Version}\\n' 2>/dev/null || rpm -qa 2>/dev/null) | sort | sha256sum",
+      "exit": 0
+    },
+    {
+      "name": "snap_containers",
+      "command": "if docker ps -q >/dev/null 2>&1; then d() { docker \"$@\"; }; elif sudo -n docker ps -q >/dev/null 2>&1; then d() { sudo -n docker \"$@\"; }; else exit 1; fi; if [ -n \"$(d ps -q)\" ]; then d inspect -f '{{.Id}} {{.State.StartedAt}}' $(d ps -q --no-trunc); fi",
+      "exit": 0
+    },
+    {
+      "name": "snap_services",
+      "command": "[ -d /run/systemd/system ] || exit 1; systemctl list-units --type=service --state=running --no-legend --plain | awk '{print $1}' | xargs -r systemctl show -p Id -p InvocationID",
+      "exit": 0
+    },
+    {
+      "name": "addrs",
+      "command": "ip -o addr show",
+      "exit": 0
+    },
+    {
+      "name": "machine_id",
+      "command": "cat /etc/machine-id",
+      "exit": 0
+    },
+    {
+      "name": "boot_id",
+      "command": "cat /proc/sys/kernel/random/boot_id",
+      "exit": 0
+    },
+    {
+      "name": "listeners",
+      "command": "sudo -n ss -H -tlnp 2>/dev/null || ss -H -tln",
+      "exit": 0
+    },
+    {
+      "name": "ufw",
+      "command": "sudo -n ufw status verbose 2>/dev/null",
+      "exit": 0
+    },
+    {
+      "name": "iptables",
+      "command": "sudo -n iptables-save 2>/dev/null; echo '#--v6--'; sudo -n ip6tables-save 2>/dev/null",
+      "exit": 0
+    },
+    {
+      "name": "nft",
+      "command": "sudo -n nft list ruleset 2>/dev/null",
+      "exit": 0
+    },
+    {
+      "name": "firewalld",
+      "command": "command -v firewall-cmd >/dev/null 2>&1 || exit 127; firewall-cmd --state >/dev/null 2>&1 || sudo -n firewall-cmd --state >/dev/null 2>&1 || exit 1; fc() { firewall-cmd \"$@\" 2>/dev/null || sudo -n firewall-cmd \"$@\" 2>/dev/null; }; echo '#--zone--'; fc --get-default-zone; echo '#--list-all--'; fc --list-all",
+      "exit": 127
+    },
+    {
+      "name": "docker",
+      "command": "if docker ps -q >/dev/null 2>&1; then d() { docker \"$@\"; }; elif sudo -n docker ps -q >/dev/null 2>&1; then d() { sudo -n docker \"$@\"; }; else command -v docker >/dev/null 2>&1 || exit 127; exit 1; fi; if [ -n \"$(d ps -q)\" ]; then d inspect -f '{\"Id\":{{json .Id}},\"Name\":{{json .Name}},\"Config\":{\"Labels\":{{json .Config.Labels}}},\"NetworkSettings\":{\"Ports\":{{json .NetworkSettings.Ports}}}}' $(d ps -q); else echo '[]'; fi",
+      "exit": 0
+    },
+    {
+      "name": "read_compose",
+      "command": "cat -- /home/user/lab-host-slice/docker-compose.yml",
+      "exit": 0
+    },
+    {
+      "name": "sshd",
+      "command": "command -v sshd >/dev/null 2>&1 || exit 127; sudo -n sshd -T 2>/dev/null || sshd -T 2>/dev/null",
+      "exit": 0
+    },
+    {
+      "name": "revproxy",
+      "command": "echo '#--nginx--'; command -v nginx >/dev/null 2>&1 && nginx -T 2>/dev/null; echo '#--caddyfile--'; for f in /etc/caddy/Caddyfile /etc/caddy/caddy.conf; do [ -f \"$f\" ] && { echo \"# file $f\"; cat -- \"$f\"; }; done; echo '#--traefik--'; for f in /etc/traefik/traefik.yml /etc/traefik/traefik.yaml /etc/traefik/traefik.toml /etc/traefik/dynamic.yml /etc/traefik/dynamic.yaml /etc/traefik/dynamic.toml /etc/traefik/conf.d/*.yml /etc/traefik/conf.d/*.yaml; do [ -f \"$f\" ] && { echo \"# file $f\"; cat -- \"$f\"; }; done; exit 0",
+      "exit": 0
+    },
+    {
+      "name": "addrs",
+      "command": "ip -o addr show",
+      "exit": 0
+    },
+    {
+      "name": "dns_zones",
+      "command": "for d in /etc/bind /var/named /etc/named /var/lib/knot/zones; do [ -d \"$d\" ] || continue; find \"$d\" -maxdepth 2 -type f \\( -name 'db.*' -o -name '*.zone' -o -name '*.db' \\) 2>/dev/null | while read -r f; do echo \"# zonefile $f\"; cat -- \"$f\"; done; done; exit 0",
+      "exit": 0
+    },
+    {
+      "name": "snap_packages",
+      "command": "(dpkg-query -W -f='${Package} ${Version}\\n' 2>/dev/null || rpm -qa 2>/dev/null) | sort | sha256sum",
+      "exit": 0
+    },
+    {
+      "name": "snap_containers",
+      "command": "if docker ps -q >/dev/null 2>&1; then d() { docker \"$@\"; }; elif sudo -n docker ps -q >/dev/null 2>&1; then d() { sudo -n docker \"$@\"; }; else exit 1; fi; if [ -n \"$(d ps -q)\" ]; then d inspect -f '{{.Id}} {{.State.StartedAt}}' $(d ps -q --no-trunc); fi",
+      "exit": 0
+    },
+    {
+      "name": "snap_services",
+      "command": "[ -d /run/systemd/system ] || exit 1; systemctl list-units --type=service --state=running --no-legend --plain | awk '{print $1}' | xargs -r systemctl show -p Id -p InvocationID",
+      "exit": 0
+    }
+  ],
+  "not_done": [
+    "It does not change anything on the server: fixes are printed for you to run.",
+    "It probes only IPs proven in this run, over plain TCP connects; no banners, no payloads.",
+    "It does not resolve domains, find IPs behind Cloudflare, or probe Cloudflare addresses.",
+    "It checks one case in this version: Docker-published ports past a UFW firewall. No app checks, no CVE checks, no HTTPS review.",
+    "Proof shows you can serve or log in at the IP. Your attestation carries legal ownership.",
+    "--all-ports is your statement; eyeline cannot verify that every port of an IP reaches one server.",
+    "Reading iptables can make the server's kernel load its netfilter modules if they are not loaded yet (no files change).",
+    "The same-host guard recognizes common container/VM bridges (docker, br-, lxd, libvirt, podman, cni, veth); a guest on another bridge (e.g. Proxmox vmbr) is not detected - run eyeline from a machine that is not on the target."
+  ],
+  "finished": "2026-10-28T00:55:13+00:00"
+}

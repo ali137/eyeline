@@ -1,0 +1,6 @@
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		tcp dport vmap { 22 : accept, 80 : accept, 5432 : drop }
+	}
+}

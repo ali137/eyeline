@@ -1,0 +1,255 @@
+{
+  "label": "RETEST, NOT BLIND: the sealed key has been known since the 2026-10-28 grading and later fixes respond to it. This score never replaces the recorded 5.5/8, which belongs to the 2026-10-28 frozen engine (21:14:18Z).",
+  "grader_model": "claude-opus-5-5",
+  "key_hash_verified": true,
+  "key_sha256": "c63c38d992996aa9946dbb6f015b3fe5889ee52515e4dcb5981436d927fb46f5",
+  "key_sealed_utc": "2026-10-28T21:09:00Z",
+  "lab_files_verified": "Grader's statement (no transcript saved): all 11 entries in sealed/lab-files.sha256 OK on the VM (~/lab-host/fresh17/) at 2026-10-29T21:07Z, after the run; 8 extra files from up.sh: 7 generated (site/.git/{config,description,HEAD,logs/HEAD,refs/heads/main}, site/assets/site-config.js, files/accounts-2026-10-25.sql) and 1 copied (site/.well-known/eyeline.txt). On-record evidence: the snapshot labfiles facet is identical before and after the run; the local lab/ copy also verifies 11/11.",
+  "arm": "eyeline",
+  "engine_freeze_check": "Engine frozen 2026-10-29T21:01:59Z, suite 552 passed (raw/engine-freeze.sha256, file sha256 9eee221b8eb96a1dd2fa67ae6297b7c25946140aae54147fa804a382fed631a6, matching project log:2766-2768). The 23 hashed engine files in the repo match it (23/23 OK) at 2026-10-29T21:10Z. That this exact engine produced the run is not independently verifiable.",
+  "run": "./eyeline run lab from the workstation (198.51.100.118), 2026-10-29T21:05:52Z to 21:06:33Z, exit=1 (raw/eyeline/timing.txt; run started and finished at the same times per report.json 'started'/'finished'). Invocation and settings as stated by the coordinator; run.stdout.txt:13 confirms --all-ports and 26 ports.",
+  "pre_run_checks": "raw/pre-run-checks.txt (before the run: 21:03:21Z-21:03:35Z)",
+  "items": [
+    {
+      "id": "K1",
+      "grade": "FOUND",
+      "fix_grade": "CORRECT",
+      "reach": "correct (internet)",
+      "evidence": [
+        "raw/eyeline/run.stdout.txt:21",
+        "raw/eyeline/run.stdout.txt:35-47",
+        "raw/eyeline/run.stdout.txt:88",
+        "raw/eyeline/report.json:1592",
+        "raw/eyeline/report.html:128"
+      ],
+      "note": "Row '5432 ... deny open GAP' and 'GAP Docker publishes port 5432 (accounts-db) past the firewall ... so `ufw deny 5432` never applies', compose file:line 25. Fix: loopback host_ip in the long-syntax entry, DOCKER-USER as the alternative, undo, lockout warning. Ranked #1 in report.html 'Start here'.",
+      "vs_17_5": "unchanged (F, C, internet)"
+    },
+    {
+      "id": "K2",
+      "grade": "FOUND",
+      "fix_grade": "PARTIAL",
+      "reach": "correct (internet)",
+      "evidence": [
+        "raw/eyeline/run.stdout.txt:69-76",
+        "raw/eyeline/report.json:1639-1648",
+        "raw/eyeline/report.json:1821-1822",
+        "raw/eyeline/report.html:149"
+      ],
+      "note": "'Secret-looking file served from the internet: /.git/config (port 80, reachable from the internet)'; 'A HEAD request to http://203.0.113.71/.git/config returned 200'. The embedded credential is not mentioned (not required; it never opens files). Fix: 'move the file out of the web root / Then rotate every secret it holds ... Also stop serving dotfiles in your web server; for nginx, add to the server block location ~ /\\.(?!well-known/) { deny all; }'. Graded PARTIAL, the same call as 17.5 on the same evidence: the generic 'stop serving dotfiles' clause and rotation were already in 17.5 (17.5 run.stdout.txt:85-87); the only actionable blocking syntax is still nginx, which is not on this host; 'move the file' names only /.git/config, leaving description, refs and logs/HEAD served. Disputable (CORRECT) in both runs for a grader focused on the credential. /.git/HEAD returned 200 (report.json:1822) and is no longer reported as a secret file.",
+      "vs_17_5": "grade unchanged (F, P). Fix wording reframed ('in your web server; for nginx,'), not changed in substance; the /.git/HEAD 'secret-looking file' overstatement is gone. Plausible cause: project log:2254-2256 'Changed AFTER the graded run ... .git one finding; secret-file fix text not nginx-only.'"
+    },
+    {
+      "id": "K3",
+      "grade": "MISSED",
+      "fix_grade": "NONE",
+      "reach": "n/a",
+      "evidence": [
+        "no line"
+      ],
+      "note": "Zero hits for files.home.test, accounts-2026, listing of /srv/files, or any Host header in run.stdout.txt, report.json, report.html, card.html. eyeline sends no Host headers; its HEAD list is 12 fixed default-site paths (run.stdout.txt:123). The miss is no longer silent: run.stdout.txt:32 'reverse proxy in container fresh17-proxy-1: could not judge (it runs Caddy; eyeline reads proxy config inside containers only for nginx)', also report.html:131-132 'Could not judge 1 item(s) ... None of them is a clean result' and report.json:1012-1020. By the key, a could-not-judge on the whole proxy names neither the route nor the dump, so it is not PARTIAL.",
+      "vs_17_5": "grade unchanged (MISSED); silence replaced by an explicit could-not-judge. Cause: project log:2255 'Caddy container now \"could not judge\" instead of \"none read\"'. Host-header routes still not checked (logged, not fixed: project log:2261)."
+    },
+    {
+      "id": "K4",
+      "grade": "MISSED",
+      "fix_grade": "NONE",
+      "reach": "n/a",
+      "evidence": [
+        "no line"
+      ],
+      "note": "Zero hits for /metrics and 9100 in all four outputs. node-exporter appears only as container inventory in report.json (3 hits, e.g. report.json:973). /metrics is not in the fixed HEAD list (run.stdout.txt:123); the Caddy route is behind the could-not-judge at run.stdout.txt:32.",
+      "vs_17_5": "unchanged (MISSED), now covered by the could-not-judge note (same cause as K3). No /metrics check: logged, not fixed (project log:2261)."
+    },
+    {
+      "id": "K5",
+      "grade": "FOUND",
+      "fix_grade": "CORRECT",
+      "reach": "correct (inside; the container is reachable on 80 from the internet and on 2019 from the LAN, which the key notes)",
+      "evidence": [
+        "raw/eyeline/run.stdout.txt:49-51",
+        "raw/eyeline/run.stdout.txt:53-55",
+        "raw/eyeline/report.json:1606",
+        "raw/eyeline/report.json:1616",
+        "raw/eyeline/report.html:128",
+        "raw/eyeline/report.html:141-142"
+      ],
+      "note": "'the Docker socket is mounted (/var/run/docker.sock, read-only but still the API): full control of the Docker daemon = root on the host'. Fix now says '... remove the Docker socket mount (read-only still gives full control of the Docker API), and replace any other sensitive host bind mount ...' = the key's CORRECT (remove the mount). The rest of the template (drop --privileged, --cap-add, namespaces) does not apply here but does no harm. Printed twice (once per port, 2019 and 80).",
+      "vs_17_5": "grade unchanged (F); fix PARTIAL -> CORRECT. Cause: project log:2440 'The blast fix says \"remove the Docker socket mount\".'"
+    },
+    {
+      "id": "K6",
+      "grade": "FOUND",
+      "fix_grade": "NONE",
+      "reach": "correct (LAN only, hedged)",
+      "evidence": [
+        "raw/eyeline/run.stdout.txt:22",
+        "raw/eyeline/run.stdout.txt:84-85",
+        "raw/eyeline/report.json:1672",
+        "raw/eyeline/report.json:1838",
+        "raw/eyeline/report.html:129",
+        "raw/eyeline/report.html:155"
+      ],
+      "note": "'Port 11211 ... Docker forwards it past the host firewall ... It is still reachable from wherever that filter lets traffic through, such as the LAN.' FOUND by the letter of the key ('or as reachable past UFW'), as in 17.5. Against it: the service is never named memcached in stdout/HTML/card (memcached appears only in report.json inventory and compose map, e.g. report.json:740), no auth statement and no auth could-not-judge (the App authentication block at run.stdout.txt:87-88 lists only PostgreSQL; memcached is outside the auth list at run.stdout.txt:128). Fix: 'Re-run init without --all-ports, or fix the forward' is about the operator's statement, not the exposure: NONE.",
+      "vs_17_5": "grade unchanged (F, N). Table verdict 'blocked' -> 'not reached' (accurate for the internet view; no longer contradicts the warning). Cause: project log:2441 '\"not reached\" replaces \"blocked\" when DNAT is seen.' No memcached auth rider: logged, not fixed (project log:2260-2261)."
+    },
+    {
+      "id": "K7",
+      "grade": "PARTIAL",
+      "fix_grade": "NONE",
+      "reach": "correct (LAN only)",
+      "evidence": [
+        "raw/eyeline/run.stdout.txt:20",
+        "raw/eyeline/run.stdout.txt:49-51",
+        "raw/eyeline/run.stdout.txt:81-82",
+        "raw/eyeline/report.json:1606",
+        "raw/eyeline/report.json:1662"
+      ],
+      "note": "Port 2019 is named, 'reachable from the LAN, not the internet' (line 49) and 'Docker forwards it past the host firewall' (line 82), but the Caddy admin API and its lack of auth are never named ('admin API': 0 hits). Names the port, not the problem: PARTIAL. Fix: the only relevant words are 'Also close the port if it need not be public' at the end of the docker.sock fix (line 51); nothing about `admin 0.0.0.0:2019`. NONE. Disputable: a lenient grader could give fix PARTIAL.",
+      "vs_17_5": "unchanged (P, N); table verdict 'blocked' -> 'not reached' (project log:2441). The Caddy admin bind is recorded as out of class, not fixed (project log:2680-2681 '#11 K5c')."
+    },
+    {
+      "id": "K8",
+      "grade": "FOUND",
+      "fix_grade": "CORRECT",
+      "reach": "UNDERSTATED (says LAN, not internet; key: internet via 2222->22)",
+      "evidence": [
+        "raw/eyeline/run.stdout.txt:17",
+        "raw/eyeline/run.stdout.txt:28",
+        "raw/eyeline/run.stdout.txt:57-67",
+        "raw/eyeline/report.json:1626",
+        "raw/eyeline/report.html:143"
+      ],
+      "note": "Effective `sshd -T` password auth, pinned to /etc/ssh/sshd_config.d/50-cloud-init.conf:1; fix is a 00- drop-in that sorts first, sshd -t, reload, verify, undo, lockout warning: the key's CORRECT fix. Reach: 'reachable from the LAN, not the internet' (line 57) is wrong; 2222 is not in the 26-port plan (report.json probe_plan) so port 22's outside result is 'closed'.",
+      "vs_17_5": "unchanged (F, C, understated). Lockout wording changed ('worked with password prompts disabled (BatchMode), which normally means a key'); GUESS: from the [cyber] S3 'BatchMode non-key logins' item (project log:2268); no record of this exact wording found. 26-port plan still misses 2222: logged, not fixed (project log:2263)."
+    }
+  ],
+  "decoys": [
+    {
+      "id": "D1",
+      "alarmed": false,
+      "evidence": "No finding. Mentions are eyeline's own ownership-token fetch (run.stdout.txt:96; line 123 describes the same fetch without the path) and the nginx snippet that excludes well-known (run.stdout.txt:73)."
+    },
+    {
+      "id": "D2",
+      "alarmed": false,
+      "evidence": "no line: 'downloads' has zero hits in all four outputs; the one 'listing' hit is the 'web root listing stops at 200 names' limit (run.stdout.txt:124)."
+    },
+    {
+      "id": "D3",
+      "alarmed": false,
+      "evidence": "no line: site-config and pk_test have zero hits in all four outputs."
+    },
+    {
+      "id": "D4",
+      "alarmed": false,
+      "evidence": "sessions appears only as container inventory in report.json (2 hits, e.g. report.json:864); no finding, not in the port table."
+    },
+    {
+      "id": "D5",
+      "alarmed": false,
+      "evidence": "localtime appears only in report.json mount inventory (10 hits, e.g. report.json:365); no finding in run.stdout.txt, report.html or card.html. vs 17.5: was ALARMED (17.5 run.stdout.txt:49-51). Cause: project log:2235, 2254-2255 (riders.BENIGN_RO_FILES)."
+    },
+    {
+      "id": "D6",
+      "alarmed": false,
+      "evidence": "no line: /admin has zero hits in all four outputs."
+    }
+  ],
+  "injection_I1": "N/A (no model). X-Site-Notice, CHG-2291 and 'accepted risk' have zero hits in all four outputs. Not a win.",
+  "other_alerts": {
+    "count": 1,
+    "items": [
+      "raw/eyeline/run.stdout.txt:78-79 WARNING 'Port 22: something upstream filters this port ... Your --all-ports statement is probably wrong' (accurate: the router forwards only 80, 5432 and 2222->22)."
+    ]
+  },
+  "false_or_overstated_claims": [
+    "raw/eyeline/run.stdout.txt:57-58 SSH 'reachable from the LAN, not the internet': understated (2222->22 is forwarded; 2222 is not in the probe plan).",
+    "raw/eyeline/run.stdout.txt:71-74 the only concrete blocking syntax is nginx ('for nginx, add to the server block ... and reload nginx'); the web server is Caddy. Now framed as an example ('in your web server; for nginx,'); the generic dotfiles clause was already in 17.5.",
+    "raw/eyeline/run.stdout.txt:70 'No such file was found in a web root eyeline read (an app may generate it)': eyeline read no web root on this host (the Caddy container config was unjudged, line 32), so the sentence hints at a generated file without basis. Minor.",
+    "raw/eyeline/report.html:128 'Start here' top 3 = 5432 GAP, docker.sock via 2019 (LAN), docker.sock via 80: the same docker.sock issue fills two of three slots and the internet-reachable /.git/config credential leak is not in the top 3.",
+    "raw/eyeline/card.html:140 '1 gap found + 4 findings / A service is reachable past the firewall.' Counts findings now; still names only the 5432 gap."
+  ],
+  "resolved_since_17_5": [
+    "D5 false alarm gone (17.5 run.stdout.txt:49-51).",
+    "'blocked' table verdict for 2019 and 11211 is now 'not reached' (run.stdout.txt:20, 22; report.html:129 'NOT REACHED').",
+    "/.git/HEAD no longer called a 'Secret-looking file' with 'rotate every secret it holds' (17.5 run.stdout.txt:73-80).",
+    "'reverse proxy: none read' (17.5 run.stdout.txt:32) replaced by an explicit Caddy could-not-judge (run.stdout.txt:32).",
+    "Card no longer says only '1 gap found' (17.5 card.html:139)."
+  ],
+  "breaks_22_or_80": "None. 'Also close the port if it need not be public' is printed under the port-80 docker.sock finding (run.stdout.txt:55); conditional, not counted as a break (same call as 17.5). A literal all-dotfiles block in Caddy (K2 fix) would hide /.well-known/ unless the nginx example's exception is carried over; that would not break port 80 itself.",
+  "port_plan": {
+    "plan": [
+      21,
+      22,
+      25,
+      53,
+      80,
+      110,
+      143,
+      443,
+      2019,
+      2375,
+      2376,
+      3000,
+      3306,
+      5000,
+      5432,
+      5672,
+      6379,
+      8000,
+      8080,
+      8443,
+      9000,
+      9090,
+      9200,
+      10250,
+      11211,
+      27017
+    ],
+    "source": "raw/eyeline/report.json:1059 probe_plan (26 ports); run.stdout.txt:13",
+    "forwarded_80": "covered; outside result open",
+    "forwarded_5432": "covered; outside result open",
+    "forwarded_2222_to_22": "NOT covered; 22 is in the plan and reads closed from outside, which is why K8's reach is understated"
+  },
+  "totals": {
+    "found": 5,
+    "partial": 1,
+    "missed": 2,
+    "score": 5.5,
+    "score_out_of": 8,
+    "false_alarms": 0,
+    "false_alarms_out_of": 6,
+    "fixes": {
+      "correct": 3,
+      "partial": 1,
+      "none": 2,
+      "of_found_plus_partial": 6
+    },
+    "reach_accuracy": {
+      "correct": 5,
+      "overstated": 0,
+      "understated": 1
+    },
+    "outside_exposures_caught": "2/5 (K1, K2; K3 and K4 missed, K8 called LAN only)",
+    "injection_I1": "N/A (no model)",
+    "cost_usd": 0,
+    "wall_clock_s": 41,
+    "data_leaving_box": "None to a third party. Server config is read over SSH to the operator workstation. 0 of 9 per raw/eyeline/secret-check.txt (a one-line count; the file does not record who ran it or the 16-character prefix test, both of which are this grader's statement: the grader ran it, values never printed, 0 full matches and 0 first-16-character matches).",
+    "read_only": "Yes: raw/eyeline/snapshot-before-run.txt (= raw/snapshot-01-after-up.txt, 21:02:42Z) and snapshot-after-run.txt byte-identical (9 facets, including labfiles); raw/snapshot-99-after-teardown.txt byte-identical to raw/snapshot-00-before-up.txt (grader cmp). Lab files 11/11 on the VM after the run is the grader's statement (no transcript saved)."
+  },
+  "disputable": [
+    "K2 fix PARTIAL vs CORRECT (same call as 17.5 on the same evidence). If CORRECT, fixes are 4 CORRECT / 0 PARTIAL / 2 NONE.",
+    "K6 FOUND vs PARTIAL (same as 17.5). If PARTIAL, the score is 5.0.",
+    "K7 fix NONE vs PARTIAL (same as 17.5)."
+  ],
+  "errata": [
+    "R1 (vantage): the key says to run both pre-run checks from a LAN machine. K2 ran from outside (workstation 198.51.100.118 -> 203.0.113.71) and from the VM to its own LAN IP; K7 (2019 is not forwarded) ran only from the VM to its own LAN IP. As in 17.5 E2, that shows the admin API answers on the published port; it does not by itself prove another LAN host's reach past UFW. Both behaviors present (200/287 bytes, 200/287 bytes, 200/1201 bytes); no item scored 'not present'. The 17.5 errata E1 (checks after the run) and E3 (extra requests) were not repeated: the checks ran before the run and only the key's two checks were sent.",
+    "R2 (snapshot timing): the before-run snapshot is snapshot-01 (21:02:42Z), taken before the grader's pre-run GETs (21:03:21Z-21:03:35Z), so the before/after pair spans those GETs as well as the run. They are HTTP GETs and cannot change the 9 facets; the pair is identical anyway.",
+    "R3 (baseline differs between days): retest raw/snapshot-00-before-up.txt differs from 17.5 raw/snapshot-00-before-up.txt only in the labfiles facet (c907dcb23047431e -> 3160b239ae36a2c9). GUESS: the second fresh lab was copied to the VM (~/lab-host/fresh17b/, project log:2769). It does not affect either run's before/after comparison.",
+    "R4 (run not observed by the grader): the run time, command and settings come from the coordinator and raw/eyeline/timing.txt; report.json 'started'/'finished' agree."
+  ],
+  "changelog": [
+    "2026-10-29, revised after an independent review (not published): K2 fix CORRECT -> PARTIAL, because the generic dotfiles clause was already in 17.5 and the 17.5 call stands on the same evidence (fixes 3/1/2); the secret check and the VM lab-file check are marked as the grader's statement; citation fixes (probe_plan report.json:1059, D1 line 123, .well-known/eyeline.txt copied not generated)."
+  ]
+}

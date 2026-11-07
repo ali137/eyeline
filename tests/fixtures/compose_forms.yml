@@ -1,0 +1,43 @@
+# Decoys and long-form ports for the compose locator.
+name: forms
+x-common: &common
+  ports:
+    - "15432:5432"
+
+services:
+  decoy:
+    image: postgres
+    expose:
+      - "5432"
+    ports:
+      - "6000:5432"   # host side is 6000
+  api:
+    image: api
+    expose:
+      - 8080
+    ports:
+    - target: 5432
+      published: "15432"
+      protocol: tcp
+    - target: 80
+      published: 8080
+    deploy:
+      ports:
+        - "7000:7000"
+  worker:
+    image: worker
+    environment:
+      PORT: "5432:5432"
+  "web":
+    image: web
+    ports: ["8443:443", '9090:9090/udp']
+  range:
+    image: r
+    ports:
+      - 5000-5010:5000-5010
+      - '[::1]:7777:7777'
+      - "127.0.0.1::6380"
+volumes:
+  data:
+    ports:
+      - "4444:4444"

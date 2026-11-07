@@ -1,0 +1,12 @@
+# local state written by ./eyeline; never committed
+eyeline-scope*.json
+eyeline-scope.json.tmp
+eyeline-reports/
+eyeline-state/
+eyeline-accepted/
+
+# python
+__pycache__/
+.pytest_cache/
+*.pyc
+*.tmp

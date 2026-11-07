@@ -1,0 +1,20 @@
+#--zone--
+public
+#--list-all--
+public (default, active)
+  target: default
+  ingress-priority: 0
+  egress-priority: 0
+  icmp-block-inversion: no
+  interfaces: eth0
+  sources:
+  services: ssh
+  ports:
+  protocols:
+  forward: yes
+  masquerade: no
+  forward-ports:
+  source-ports:
+  icmp-blocks:
+  rich rules:
+	rule family="ipv4" port port="9999" protocol="tcp" accept

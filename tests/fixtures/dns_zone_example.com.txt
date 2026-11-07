@@ -1,0 +1,11 @@
+$TTL 3600
+@       IN      SOA     ns1.example.com. admin.example.com. (
+                        2026102801 3600 600 1209600 3600 )
+        IN      NS      ns1.example.com.
+ns1     IN      A       203.0.113.71
+@       IN      A       203.0.113.71
+www     IN      A       203.0.113.71
+app     IN      A       203.0.113.71
+db      IN      A       10.0.0.5
+ipv6    IN      AAAA    2001:db8:a::1
+mail    IN      A       203.0.113.9

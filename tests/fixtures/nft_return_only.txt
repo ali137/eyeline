@@ -1,0 +1,5 @@
+table ip filter {
+	chain DOCKER-USER {
+		counter packets 9 bytes 540 return
+	}
+}

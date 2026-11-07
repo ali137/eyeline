@@ -1,0 +1,30 @@
+# eyeline slice lab: OWN LABS ONLY. Deploy on a box you own (a VM or LXD
+# container), never on a server that holds real data. See lab/slice/README.md.
+#
+#   lab-db     PLANT  "5432:5432" binds 0.0.0.0, so Docker's NAT rules let it
+#                     past `ufw deny 5432`. eyeline must flag this one.
+#   lab-cache  DECOY  "127.0.0.1:6379:6379" is loopback only. eyeline must NOT flag it.
+#   lab-web    INTENDED  port 80, allowed in UFW; also serves the ownership token.
+#
+# Up:   LAB_DB_PASSWORD="$(openssl rand -hex 24)" docker compose up -d
+# Down: docker compose down
+
+services:
+  lab-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: ${LAB_DB_PASSWORD:?set LAB_DB_PASSWORD to a long random value}
+    ports:
+      - "5432:5432"
+
+  lab-cache:
+    image: redis:7-alpine
+    ports:
+      - "127.0.0.1:6379:6379"
+
+  lab-web:
+    image: nginx:alpine
+    volumes:
+      - ./www:/usr/share/nginx/html:ro
+    ports:
+      - "80:80"
